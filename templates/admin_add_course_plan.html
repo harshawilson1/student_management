@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Course Plan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
+    <div id="mySidebar" class="erp-navbar">
+  <div class="nav-left">
+    <a class="logo" href="/dashboard">ERP Dashboard</a>
+    <a href="/students">Students</a>
+    <a href="/course_requests">Course Requests</a>
+    <a href="/courses">Courses</a>
+        <a href="/admin_add_materials">Add Materials</a>
+    <a href="/attendance">Attendance</a>
+    <a href="/fees">Fees</a>
+    <a href="/points">Points</a>
+    <a href="/top_students">Top Students</a>
+
+  </div>
+  <div class="nav-right">
+    <a href="/profile" class="btn btn-primary">Profile</a>
+
+    <a href="/logout" class="btn btn-primary">Logout</a>
+  </div>
+</div>
+<div class="container mt-5">
+    <h3>Add Course Plan for Course ID: {{ course_id }}</h3>
+    <form action="" method="POST">
+        <div class="mb-3">
+            <label>Week No</label>
+            <input type="number" name="week_no" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Topic</label>
+            <input type="text" name="topic" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label>Description</label>
+            <textarea name="description" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Add Plan</button>
+    </form>
+    <a href="/dashboard" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+
+<script src="/static/js/theme.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Attendance</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body class="p-4 bg-light">
+<button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
+
+<!-- ===== NAVBAR ===== -->
+<div id="mySidebar" class="erp-navbar">
+  <div class="nav-left">
+    <a class="logo" href="/dashboard">ERP Dashboard</a>
+    <a href="/students">Students</a>
+    <a href="/course_requests">Course Requests</a>
+    <a href="/courses">Courses</a>
+                <a href="{{ url_for('add_material') }}">Add Materials</a>
+    <a href="/fees">Fees</a>
+    <a href="/points">Points</a>
+    <a href="/top_students">Top Students</a>
+  </div>
+  <div class="nav-right">
+    <a href="/profile" class="btn btn-primary">Profile</a>
+    <a href="/logout" class="btn btn-primary">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+    <h2 class="mb-4">Class Attendance</h2>
+    <a href="/dashboard" class="btn btn-secondary mb-3">Back to Dashboard</a>
+
+    <!-- FILTER FORM -->
+    <form method="get" class="mb-4 row g-2">
+        <div class="col-auto">
+            <label for="subject" class="form-label">Subject</label>
+            <select name="subject" id="subject" class="form-select" required>
+                <option value="">-- Select Subject --</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}" {% if selected_subject == subject.id|string %}selected{% endif %}>{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" name="date" id="date" class="form-control" value="{{ attendance_date }}">
+        </div>
+        <div class="col-auto">
+            <label for="chart_type" class="form-label">Analytics Type</label>
+            <select name="chart_type" id="chart_type" class="form-select">
+                <option value="day" {% if chart_type=='day' %}selected{% endif %}>Day</option>
+                <option value="week" {% if chart_type=='week' %}selected{% endif %}>Week</option>
+                <option value="month" {% if chart_type=='month' %}selected{% endif %}>Month</option>
+            </select>
+        </div>
+        <div class="col-auto align-self-end">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+        {% if students %}
+        <div class="col-auto align-self-end">
+            <a href="{{ url_for('attendance', subject=selected_subject, date=attendance_date, download=1) }}" 
+               class="btn btn-success">Download CSV</a>
+        </div>
+        {% endif %}
+    </form>
+
+    {% if students %}
+    <form method="post">
+        <table class="table table-striped table-bordered align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Student Name</th>
+                    <th class="text-success">Present</th>
+                    <th class="text-danger">Absent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>
+                        <input type="radio" name="status_{{ student.id }}" value="Present" {% if student.attended==1 %}checked{% endif %}>
+                    </td>
+                    <td>
+                        <input type="radio" name="status_{{ student.id }}" value="Absent" {% if student.attended==0 %}checked{% endif %}>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-success">Save Attendance</button>
+    </form>
+    {% else %}
+        {% if selected_subject %}
+        <p>No students found for this subject.</p>
+        {% endif %}
+    {% endif %}
+
+    <!-- ===== Attendance Analytics Chart ===== -->
+    {% if chart_labels and chart_values %}
+    <div class="card mt-5 p-3">
+        <h4>Attendance Analytics ({{ chart_type.capitalize() }})</h4>
+        <canvas id="attendanceChart" width="400" height="200"></canvas>
+    </div>
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/theme.js" defer></script>
+<script>
+{% if chart_labels and chart_values %}
+const ctx = document.getElementById('attendanceChart').getContext('2d');
+const attendanceChart = new Chart(ctx, {
+    type: 'pie',  // change to 'bar' if you prefer trends
+    data: {
+        labels: {{ chart_labels|safe }},
+        datasets: [{
+            label: 'Attendance %',
+            data: {{ chart_values|safe }},
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 159, 64, 0.6)'
+            ],
+            borderColor: 'rgba(255, 255, 255, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.parsed.toFixed(2) + '%';
+                    }
+                }
+            }
+        }
+    }
+});
+{% endif %}
+</script>
+</body>
+</html>

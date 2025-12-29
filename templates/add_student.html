@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="p-4">
+<button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
+
+
+<!-- ===== NAVBAR ===== -->
+<!-- Sidebar -->
+<div id="mySidebar" class="erp-navbar">
+  <div class="nav-left">
+    <a class="logo" href="/dashboard">ERP Dashboard</a>
+    <a href="/students">Students</a>
+    <a href="/course_requests">Course Requests</a>
+    <a href="{{ url_for('add_material') }}">Add Materials</a>
+    <a href="/fees">Fees</a>
+    <a href="/points">Points</a>
+    <a href="/top_students">Top Students</a>
+
+  </div>
+  <div class="nav-right">
+    <a href="/profile" class="btn btn-primary">Profile</a>
+
+    <a href="/logout" class="btn btn-primary">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+    <h2>Add Student</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="courses">Select Courses</label>
+<select name="courses" id="courses" multiple>
+    {% for course in courses %}
+        <option value="{{ course.id }}">{{ course.name }}</option>
+    {% endfor %}
+</select>
+
+        </div>
+        <button type="submit" class="btn btn-success">Add</button>
+        <a href="/students" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+<script src="/static/js/theme.js" defer></script>
+</body>
+</html>

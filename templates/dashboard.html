@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="dashboard-body">
+<button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
+
+
+<!-- ===== NAVBAR ===== -->
+<!-- Sidebar -->
+<div id="mySidebar" class="erp-navbar">
+  <div class="nav-left">
+    <a class="logo" href="/dashboard">ERP Dashboard</a>
+<a href="/students">Students</a>
+<a href="/course_requests">Course Requests</a>
+<a href="/courses">Courses</a>
+            <a href="{{ url_for('add_material') }}">Add Materials</a>
+           <a href="/attendance">Attendance</a>
+<a href="/fees">Fees</a>
+<a href="/points">Points</a>
+<a href="/top_students">Top Students</a>
+
+  </div>
+  <div class="nav-right">
+    <a href="/profile" class="btn btn-primary">Profile</a>
+
+    <a href="/logout" class="btn btn-primary">Logout</a>
+  </div>
+</div>
+
+<div class="marquee-container">
+  <div class="marquee-wrapper">
+    <p class="marquee-item">🚀 Best School in town</p>
+    <p class="marquee-item">🎉 Has been in top 10 list since 2010!</p>
+    <p class="marquee-item">💬 Loved by students,respected by parents!</p>
+    <!-- Duplicate content for seamless loop -->
+    <p class="marquee-item">🚀 Best School in town</p>
+    <p class="marquee-item">🎉 Has been in top 10 list since 2010!</p>
+    <p class="marquee-item">💬 Loved by students,respected by parents!</p>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="dashboard-container">
+    <h2>Hi,welcome back!</h2>
+
+<div class="dashboard-cards">
+    <div class="card card-students">
+        <img src="{{ url_for('static', filename='images/school.png') }}" class="card-icon" alt="Students Icon">
+        <h3>Total Students</h3>
+        <p class="numbers">{{ total_students }}</p>
+    </div>
+    <div class="card card-courses">
+        <img src="{{ url_for('static', filename='images/book.png') }}" class="card-icon" alt="Courses Icon">
+        <h3>Total Courses</h3>
+        <p class="numbers">{{ total_courses }}</p>
+    </div>
+
+<div class="card card-attendance">
+  <h3>Attendance Trend</h3>
+  <canvas id="attendanceChart"
+          data-values='{{ attendance_values|tojson }}'
+          data-labels='{{ attendance_labels|tojson }}'></canvas>
+</div>
+
+<div class="card card-holidays">
+<!-- ===== UPCOMING HOLIDAYS TILE ===== -->
+<table class="holiday-table">
+  <tr>
+    {% for day_name in day_names %}
+      <th>{{ day_name }}</th>
+    {% endfor %}
+  </tr>
+  {% for week in weeks %}
+  <tr>
+    {% for day in week %}
+      <td>
+        {% if day %}
+          {{ day }}
+          {% for h in upcoming_holidays %}
+            {% if h.date.day == day and h.date.month == month %}
+              <br>{{ h.title }}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+<h3>Upcoming Holidays</h3>
+<ul>
+    {% for h in upcoming_holidays %}
+    <li>{{ h.date.strftime('%d %b') }} - {{ h.title }}</li>
+    {% else %}
+    <li>No upcoming holidays</li>
+    {% endfor %}
+</ul>
+</div>
+
+</div>
+<div class="about-section">
+    <h3 class="about-header">About ERP Dashboard</h3>
+    <p>This ERP Dashboard is designed to help educational institutions manage their students, courses, attendance, fees, and performance points efficiently. It provides an intuitive interface for administrators to oversee various aspects of student management.</p>
+</div>
+<div class="features-section">
+    <h2 class="text-center">Key Features</h2>
+    <p>Features include:</p>
+    <ul>
+        <li>Student Enrollment and Management</li>
+        <li>Course Creation and Assignment</li>
+        <li>Attendance Tracking with Visual Analytics</li>
+        <li>Fee Management and Status Monitoring</li>
+        <li>Performance Points System for Student Evaluation</li>
+    </ul>
+    <p>Utilize this dashboard to streamline administrative tasks and enhance the overall management of your institution.</p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

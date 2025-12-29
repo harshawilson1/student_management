@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Course</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Select a Course to Add Materials</h2>
+        <ul>
+        {% for course in courses %}
+            <li>
+                {{ course.name }} - 
+                <a href="{{ url_for('add_material', course_id=course.id) }}" class="btn btn-sm btn-success">Add Material</a>
+                <a href="{{ url_for('add_course_plan', course_id=course.id) }}" class="btn btn-sm btn-primary">Add Course Plan</a>
+            </li>
+        {% endfor %}
+        </ul>
+        <a href="/dashboard" class="btn btn-secondary mt-3">Back to Dashboard</a>
+    </div>
+</body>
+</html>

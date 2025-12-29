@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Grades</title>
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">    
+<link href="{{ url_for('static', filename='css/student_style.css') }}" rel="stylesheet
+">
+</head>
+<body>
+    <div id="sidebar" class="sidebar">
+    <button class="closebtn" onclick="toggleSidebar()">×</button>
+    <a href="/student_dashboard">Dashboard</a>
+    <a href="/view_courses">View Courses</a>
+    <a href="/view_grades">View Grades</a>
+    <hr style="border: 0.5px solid #34495e; margin: 10px 0;">
+    <a href="/profile">Profile</a>
+    <a href="/change_password">Change Password</a>
+    <a href="/logout">Logout</a>
+</div>
+<!-- Main content -->
+<div id="main">
+    <button class="openbtn" onclick="toggleSidebar()">☰ Menu</button>
+
+    <div class="dashboard-header">
+        <h1>Welcome, {{ session.get('user') }}!</h1>
+    </div>
+    <div class="container mt-4">
+    <h2>Your Grades</h2>
+    <table class="table table-striped table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Subject</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for g in grades_data %}
+            <tr>
+                <td>{{ g.subject }}</td>
+                <td>{{ g.grade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='js/student.js') }}"></script>
+</body> 
+</html>

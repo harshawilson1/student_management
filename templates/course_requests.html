@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>  
+<head>
+    <title>pending Courses request</title>
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
+
+
+<!-- ===== NAVBAR ===== -->
+<!-- Sidebar -->
+<div id="mySidebar" class="erp-navbar">
+  <div class="nav-left">
+    <a class="logo" href="/dashboard">ERP Dashboard</a>
+<a href="/students">Students</a>
+<a href="/course_requests">Course Requests</a>
+<a href="/courses">Courses</a>
+<a href="{{ url_for('add_material') }}">Add Materials</a>
+<a href="/fees">Fees</a>
+<a href="/points">Points</a>
+<a href="/top_students">Top Students</a>
+
+  </div>
+  <div class="nav-right">
+    <a href="/profile" class="btn btn-primary">Profile</a>
+
+    <a href="/logout" class="btn btn-primary">Logout</a>
+  </div>
+</div>
+<div class="container mt-4">
+<h2>Pending Course Requests</h2>
+
+<table class="table table-striped table-hover">
+<tr>
+    <th>Student</th>
+    <th>Course</th>
+    <th>Action</th>
+</tr>
+
+{% for r in requests %}
+<tr>
+    <td>{{ r.student }}</td>
+    <td>{{ r.course }}</td>
+    <td>
+        <a href="/approve_course/{{ r.student_id }}/{{ r.course_id }}">Approve</a>
+        <a href="/reject_course/{{ r.student_id }}/{{ r.course_id }}">Reject</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+</div>
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
+</body>
+</html>

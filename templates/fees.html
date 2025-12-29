@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fee Management</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body class="p-4 bg-light">
+
+<button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
+
+<!-- ===== SIDEBAR ===== -->
+<div id="mySidebar" class="erp-navbar">
+  <div class="nav-left">
+    <a class="logo" href="/dashboard">ERP Dashboard</a>
+    <a href="/students">Students</a>
+    <a href="/course_requests">Course Requests</a>
+    <a href="/courses">Courses</a>
+            <a href="{{ url_for('add_material') }}">Add Materials</a>
+    <a href="/fees">Fees</a>
+    <a href="/points">Points</a>
+    <a href="/top_students">Top Students</a>
+  </div>
+  <div class="nav-right">
+    <a href="/profile" class="btn btn-primary">Profile</a>
+    <a href="/logout" class="btn btn-primary">Logout</a>
+  </div>
+</div>
+
+<div class="container">
+    <h2 class="mb-4">Student Fee Details</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="/fees/download_csv" class="btn btn-info">Download CSV</a>
+    </div>
+
+    <table class="table table-striped table-bordered text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>Student</th>
+            <th>Total Fee</th>
+            <th>Paid</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for student in students %}
+        <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.total_fees or 0 }}</td>
+            <td>{{ student.paid_fees or 0 }}</td>
+            <td>
+                {% if student.paid_fees >= student.total_fees %}
+                    <span class="badge bg-success">Paid</span>
+                {% else %}
+                    <span class="badge bg-danger">Pending</span>
+                {% endif %}
+            </td>
+            <td>
+                <!-- Button to trigger modal -->
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editFeeModal{{ student.id }}">Edit</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="editFeeModal{{ student.id }}" tabindex="-1">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <form method="POST" action="{{ url_for('update_fee', student_id=student.id) }}">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Edit Fee - {{ student.name }}</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                          <label>Total Fee:</label>
+                          <input type="number" name="total_fees" class="form-control" value="{{ student.total_fees or 0 }}" required>
+                          <label>Paid:</label>
+                          <input type="number" name="paid_fees" class="form-control" value="{{ student.paid_fees or 0 }}" required>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

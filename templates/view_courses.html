@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Courses</title>
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">    
+<link href="{{ url_for('static', filename='css/student_style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div id="sidebar" class="sidebar">
+    <button class="closebtn" onclick="toggleSidebar()">×</button>
+    <a href="/student_dashboard">Dashboard</a>
+    <a href="/view_courses">View Courses</a>
+    <a href="/view_grades">View Grades</a>
+    <hr style="border: 0.5px solid #34495e; margin: 10px 0;">
+    <a href="/profile">Profile</a>
+    <a href="/change_password">Change Password</a>
+    <a href="/logout">Logout</a>
+</div>
+
+<!-- Main content -->
+
+<div id="main">
+    <button class="openbtn" onclick="toggleSidebar()">☰ Menu</button>
+
+    <div class="dashboard-header">
+        <h1>Welcome, {{ session.get('user') }}!</h1>
+    </div>
+
+<h2>Available Courses</h2>
+
+<table class="table"> 
+    <tr>
+        <th>Course</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for c in courses %}
+    <tr>
+        <td>{{ c.name }}</td>
+        <td>{{ c.description }}</td>
+        <td>{{c.status}}</td>
+        <td>
+{% if c.status == 'none' %}
+            <form method="post" action="/apply_course/{{ c.id }}">
+                <button type="submit">Apply</button>
+            </form>
+
+        {% elif c.status == 'pending' %}
+            <form method="post" action="/drop_course/{{ c.id }}">
+                <button type="submit">Drop</button>
+            </form>
+
+        {% elif c.status == 'approved' %}
+            ✅ Approved
+
+        {% elif c.status == 'rejected' %}
+            ❌ Rejected
+
+        {% elif c.status == 'dropped' %}
+            Dropped
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<div class="back-link"> 
+<a href="/student_dashboard">Back to Dashboard</a>
+</div>
+<script src="{{ url_for('static', filename='js/student.js') }}"></script>
+
+</body>
+</html>
