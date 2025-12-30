@@ -1230,6 +1230,6 @@ def update_profile():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect("/logout")
+    return redirect(url_for("/student_login"))   # or student_login / admin_login
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
