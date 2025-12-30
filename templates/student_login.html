@@ -9,9 +9,7 @@
 <body class="page-dark">
         <h2 class="mb-4 text-center">Student management System</h2>
 
-    {% if error %}
-    <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
+    
 <div class="container" style="max-width:400px;">
         <img src="{{ url_for('static', filename='images/man.png') }}" alt="Student Icon" class="student-icon mb-3">
     <h3 class="text-center mb-4">Student Login</h3>
@@ -22,7 +20,11 @@
 
     <form method="POST">
         <input type="hidden" name="role" value="student">
-
+<div class="alert">
+        {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+        </div>
 
 <div class="mb-3"> <label>Student Username</label> <input type="text" name="name" class="form-control" required> </div>
 

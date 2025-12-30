@@ -9,9 +9,7 @@
 <body class="page-dark">
         <h2 class="mb-4 text-center">Student management System</h2>
 
-    {% if error %}
-    <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
+    
         
     <div class="container" style="max-width:400px;">
         <img src="{{ url_for('static', filename='images/teacher.png') }}" alt="Admin Icon" class="admin-icon mb-3">
@@ -24,7 +22,11 @@
 
     <form method="POST">
         <input type="hidden" name="role" value="admin">
-
+        <div class="alert">
+        {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+        </div>
         <div class="mb-3">
             <label>Admin Username</label>
             <input type="text" name="username" class="form-control" required>
