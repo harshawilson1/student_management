@@ -31,6 +31,7 @@ app.secret_key = "secret_key"
 
 
 def get_connection():
+    print("MYSQL CONFIG USED:", MYSQL_CONFIG)
     return mysql.connector.connect(**MYSQL_CONFIG)
 
 # ---------------- HOME ----------------
@@ -1229,6 +1230,6 @@ def update_profile():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect("/login")
+    return redirect("/logout")
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
