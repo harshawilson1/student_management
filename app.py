@@ -600,6 +600,29 @@ def attendance():
             AND a.subject_id = %s
         """, (attendance_date, selected_subject))
         students = cur.fetchall()
+    # ---------------- Download CSV ----------------
+    download = request.values.get("download")
+    if download and selected_subject:
+        from io import StringIO
+        import csv
+        from flask import Response
+
+        si = StringIO()
+        cw = csv.writer(si)
+        cw.writerow(["Student Name", "Present"])
+        for s in students:
+            cw.writerow([s['name'], "Yes" if s['attended'] else "No"])
+
+        output = si.getvalue()
+        filename = f"attendance_{attendance_date}.csv"
+        cur.close()
+        conn.close()
+    return Response(
+        output,
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment;filename={filename}"}
+    )
+
 
     # Save attendance if POST
     if request.method == "POST" and selected_subject:
