@@ -62,7 +62,6 @@
 
   </div>
   <div class="nav-right">
-    <a href="/profile" class="btn btn-primary">Profile</a>
 
     <a href="/logout" class="btn btn-primary">Logout</a>
   </div>
@@ -88,6 +87,8 @@
 </tr>
 {% endfor %}
 </table>
+            <a href="/dashboard" class="btn btn-secondary mt-3">Back to Dashboard</a>
+
 </div>
 <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 
