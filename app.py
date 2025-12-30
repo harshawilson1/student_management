@@ -15,16 +15,33 @@ from io import StringIO
 import datetime
 
 GENERAL_HOLIDAYS = [
-    {"date":"14-01", "title":"Makar Sankranti"},   
-    {"date":"19-01", "title":"Guru Gobind Singh Jayanti"},
-    {"date":"10-02", "title":"Maha Shivratri"},
-    {"date":"29-03", "title":"Holi"},
-    {"date":"07-04", "title":"Good Friday"},
-    {"date":"01-01", "title": "New Year"},
-    {"date": "26-01", "title": "Republic Day"},
-    {"date": "15-08", "title": "Independence Day"},
-    {"date": "25-12", "title": "Christmas"},
+    {"date": "2026-01-26", "title": "Republic Day"},
+    {"date": "2026-02-15", "title": "Maha Shivratri"},
+    {"date": "2026-02-19", "title": "Chhatrapati Shivaji Maharaj Jayanti"},
+    {"date": "2026-03-03", "title": "Holi (Second Day)"},
+    {"date": "2026-03-19", "title": "Gudi Padwa"},
+    {"date": "2026-03-21", "title": "Ramzan Eid (Eid‑ul‑Fitr)"},
+    {"date": "2026-03-26", "title": "Ram Navami"},
+    {"date": "2026-03-31", "title": "Mahavir Janmakalyanak"},
+    {"date": "2026-04-03", "title": "Good Friday"},
+    {"date": "2026-04-14", "title": "Dr. Babasaheb Ambedkar Jayanti"},
+    {"date": "2026-05-01", "title": "Maharashtra Day"},
+    {"date": "2026-05-01", "title": "Buddha Pournima"},
+    {"date": "2026-05-28", "title": "Bakri Id (Eid‑ul‑Zuha)"},
+    {"date": "2026-06-26", "title": "Moharram"},
+    {"date": "2026-08-15", "title": "Independence Day"},
+    {"date": "2026-08-15", "title": "Parsi New Year (Shahenshahi)"},
+    {"date": "2026-08-26", "title": "Id‑E‑Milad"},
+    {"date": "2026-09-14", "title": "Ganesh Chaturthi"},
+    {"date": "2026-10-02", "title": "Mahatma Gandhi Jayanti"},
+    {"date": "2026-10-20", "title": "Dasara"},
+    {"date": "2026-11-08", "title": "Diwali Amavasya (Laxmi Pujan)"},
+    {"date": "2026-11-10", "title": "Diwali (Bali Pratipada)"},
+    {"date": "2026-11-11", "title": "Bhaubeej"},
+    {"date": "2026-11-24", "title": "Guru Nanak Jayanti"},
+    {"date": "2026-12-25", "title": "Christmas"},
 ]
+
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
