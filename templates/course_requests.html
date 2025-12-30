@@ -2,7 +2,46 @@
 <html>  
 <head>
     <title>pending Courses request</title>
-<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+        th {
+            background-color: #343a40;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #e9ecef;
+        }
+        a.btn {
+            margin-right: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 6px 12px;
+            text-decoration: none;
+            color: #007bff;
+            border: 1px solid #007bff;
+        }
+        div.nav-right a {
+            margin-left: 10px;
+        }
+
+      </style>
 </head>
 <body>
     <button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
@@ -43,8 +82,8 @@
     <td>{{ r.student }}</td>
     <td>{{ r.course }}</td>
     <td>
-        <a href="/approve_course/{{ r.student_id }}/{{ r.course_id }}">Approve</a>
-        <a href="/reject_course/{{ r.student_id }}/{{ r.course_id }}">Reject</a>
+        <a class="btn btn-success" href="/approve_course/{{ r.student_id }}/{{ r.course_id }}">Approve</a>
+        <a class="btn btn-danger" href="/reject_course/{{ r.student_id }}/{{ r.course_id }}">Reject</a>
     </td>
 </tr>
 {% endfor %}

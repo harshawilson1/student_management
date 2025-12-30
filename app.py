@@ -11,7 +11,8 @@ from werkzeug.utils import secure_filename
 import uuid
 import secrets
 import json
-
+from io import StringIO
+import datetime
 
 GENERAL_HOLIDAYS = [
     {"date":"14-01", "title":"Makar Sankranti"},   
@@ -636,7 +637,7 @@ def attendance():
             start_date = datetime.strptime(attendance_date, "%Y-%m-%d") - timedelta(days=6)
             end_date = datetime.strptime(attendance_date, "%Y-%m-%d")
         else:  # month
-            today = datetime.strptime(attendance_date, "%Y-%m-%d")
+            today = datetime.datetime.strptime(attendance_date, "%Y-%m-%d")
             start_date = today.replace(day=1)
             end_date = today
 
@@ -703,8 +704,7 @@ def update_fee(student_id):
     conn.close()
 
     return redirect(url_for("fees"))
-
-@app.route("/fees/download")
+@app.route("/fees/download_csv")
 def download_fees():
     import csv
     from io import StringIO
@@ -811,23 +811,25 @@ def top_students():
 
     # Base query: join points, student_courses, and courses to fetch multiple courses per student
     query = """
-        SELECT 
-            s.id,
-            s.name,
-            COALESCE(GROUP_CONCAT(DISTINCT c.name SEPARATOR ', '), '') AS courses,
-            p.points
-        FROM students s
-        JOIN points p ON s.id = p.student_id
-        LEFT JOIN student_courses sc ON s.id = sc.student_id
-        LEFT JOIN courses c ON sc.course_id = c.id
+SELECT 
+    s.id AS student_id,
+    s.name AS student_name,
+    c.id AS course_id,
+    c.name AS course_name,
+    COALESCE(p.points, 0) AS points
+FROM students s
+JOIN student_courses sc ON s.id = sc.student_id
+JOIN courses c ON sc.course_id = c.id
+LEFT JOIN points p ON s.id = p.student_id AND c.id = p.subject_id
+
     """
     params = []
 
     if selected_subject:
-        query += " WHERE p.subject_id = %s"
+        query += " WHERE c.id = %s"
         params.append(selected_subject)
 
-    query += " GROUP BY s.id, s.name, p.points"
+    #query += " GROUP BY s.id, s.name, p.points"
     query += " ORDER BY p.points DESC"
 
     cur.execute(query, params)
@@ -839,12 +841,12 @@ def top_students():
     rank = 0
 
     for index, student in enumerate(students):
-        if student["points"] != last_points:
+        points = student.get("points", 0)
+        if points != last_points:
             rank = index + 1
-        last_points = student["points"]
+        last_points = points
         student["rank"] = rank
         ranked_students.append(student)
-
     cur.close()
     conn.close()
 
@@ -1182,7 +1184,7 @@ def update_profile_pic():
 
         flash("Profile picture updated!", "success")
 
-    return redirect("/profile")
+    return redirect(url_for("student_profile"))
 @app.route("/update_profile", methods=["POST"])
 def update_profile():
     user_id = session.get("user_id")
@@ -1223,13 +1225,14 @@ def update_profile():
     conn.close()
 
     flash("Profile updated successfully!", "success")
-    return redirect("/profile")
+    return redirect(url_for("student_profile"))
+
 
 
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("/student_login"))   # or student_login / admin_login
+    return redirect(url_for("student_login"))   # or student_login / admin_login
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
