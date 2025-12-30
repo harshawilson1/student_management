@@ -1,7 +1,8 @@
 MYSQL_CONFIG = {
-    "host": "127.0.0.1",   # VERY IMPORTANT
+    "host": "127.0.0.1",
+    "port": 3306,
     "user": "root",
-    "password": "root123",
+    "password": "",
     "database": "student_management",
-    "port": 3306
+    "use_pure": True
 }
