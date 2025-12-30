@@ -40,9 +40,15 @@
                    value="{{ student.email }}" required>
         </div>
         <div class="mb-3">
-            <label class="form-label">Course</label>
-            <input type="text" name="course" class="form-control"
-                   value="{{ student.course }}">
+<label for="course_id">Course</label>
+<select name="course_id">
+  {% for course in courses %}
+    <option value="{{ course.id }}" {% if student.course_id == course.id %}selected{% endif %}>
+      {{ course.name }}
+    </option>
+  {% endfor %}
+</select>
+
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
         <a href="/students" class="btn btn-secondary">Back</a>

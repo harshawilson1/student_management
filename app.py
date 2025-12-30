@@ -471,22 +471,26 @@ def edit_student(student_id):
     conn = get_connection()
     cur = conn.cursor(dictionary=True, buffered=True)
 
+    # Fetch all courses
+    cur.execute("SELECT * FROM courses")
+    courses = cur.fetchall()
+
     if request.method == "POST":
         name = request.form.get("name")
         email = request.form.get("email")
-        course = request.form.get("course")
+        course_id = request.form.get("course_id")  # from dropdown
 
         cur.execute("""
             UPDATE students
-            SET name=%s, email=%s, course=%s
+            SET name=%s, email=%s, course_id=%s
             WHERE id=%s
-        """, (name, email, course, student_id))
+        """, (name, email, course_id, student_id))
         conn.commit()
         cur.close()
         conn.close()
         return redirect("/students")
 
-    # GET request → fetch student info
+    # GET → fetch student info
     cur.execute("SELECT * FROM students WHERE id=%s", (student_id,))
     student = cur.fetchone()
     cur.close()
@@ -495,7 +499,7 @@ def edit_student(student_id):
     if not student:
         abort(404)
 
-    return render_template("edit_student.html", student=student)
+    return render_template("edit_student.html", student=student, courses=courses)
 @app.route("/delete_student/<int:student_id>")
 def delete_student(student_id):
     if session.get("role") != "admin":
@@ -503,11 +507,22 @@ def delete_student(student_id):
 
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("DELETE FROM students WHERE id=%s", (student_id,))
-    conn.commit()
-    cur.close()
-    conn.close()
+
+    try:
+        # Delete related attendance records first
+        cur.execute("DELETE FROM attendance WHERE student_id=%s", (student_id,))
+        # Now delete the student
+        cur.execute("DELETE FROM students WHERE id=%s", (student_id,))
+        conn.commit()
+    except mysql.connector.Error as e:
+        conn.rollback()
+        flash(f"Error deleting student: {e}")
+    finally:
+        cur.close()
+        conn.close()
+
     return redirect("/students")
+
 
 # ---------------- COURSES ----------------
 @app.route("/courses")
