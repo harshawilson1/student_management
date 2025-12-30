@@ -8,9 +8,6 @@
 </head>
 <body class="page-dark">
         <h2 class="mb-4 text-center">Student management System</h2>
-
-    
-        
     <div class="container" style="max-width:400px;">
         <img src="{{ url_for('static', filename='images/teacher.png') }}" alt="Admin Icon" class="admin-icon mb-3">
         <h3 class="text-center mb-4">Admin Login</h3>
@@ -18,8 +15,6 @@
         <a href="/student_login" class="btn btn-outline-primary w-50 me-2">Student Login</a>
         <a href="/admin_login" class="btn btn-outline-danger w-50">Admin Login</a>
     </div>
-
-
     <form method="POST">
         <input type="hidden" name="role" value="admin">
         <div class="alert">
@@ -36,7 +31,6 @@
             <label>Password</label>
             <input type="password" name="password" class="form-control" required>
         </div>
-
         <button class="btn btn-primary w-100">Login</button>
     </form>
 </div>

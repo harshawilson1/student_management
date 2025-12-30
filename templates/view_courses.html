@@ -16,18 +16,14 @@
     <a href="/change_password">Change Password</a>
     <a href="/logout">Logout</a>
 </div>
-
 <!-- Main content -->
-
 <div id="main">
     <button class="openbtn" onclick="toggleSidebar()">☰ Menu</button>
 
     <div class="dashboard-header">
         <h1>Welcome, {{ session.get('user') }}!</h1>
     </div>
-
 <h2>Available Courses</h2>
-
 <table class="table"> 
     <tr>
         <th>Course</th>
@@ -35,7 +31,6 @@
         <th>Status</th>
         <th>Action</th>
     </tr>
-
     {% for c in courses %}
     <tr>
         <td>{{ c.name }}</td>
@@ -65,11 +60,9 @@
 </tr>
 {% endfor %}
 </table>
-
 <div class="back-link"> 
 <a href="/student_dashboard">Back to Dashboard</a>
 </div>
 <script src="{{ url_for('static', filename='js/student.js') }}"></script>
-
 </body>
 </html>

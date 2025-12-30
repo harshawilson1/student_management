@@ -8,8 +8,6 @@
 </head>
 <body class="p-4">
 <button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
-
-
 <!-- ===== NAVBAR ===== -->
 <!-- Sidebar -->
 <div id="mySidebar" class="erp-navbar">
@@ -21,14 +19,11 @@
     <a href="/fees">Fees</a>
     <a href="/points">Points</a>
     <a href="/top_students">Top Students</a>
-
   </div>
   <div class="nav-right">
-
     <a href="/logout" class="btn btn-primary">Logout</a>
   </div>
 </div>
-
 <div class="container">
     <h2>Add Student</h2>
     <form method="POST">
@@ -47,7 +42,6 @@
         <option value="{{ course.id }}">{{ course.name }}</option>
     {% endfor %}
 </select>
-
         </div>
         <button type="submit" class="btn btn-success">Add</button>
         <a href="/students" class="btn btn-secondary">Back</a>

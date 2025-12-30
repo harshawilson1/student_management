@@ -45,8 +45,6 @@
 </head>
 <body>
     <button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
-
-
 <!-- ===== NAVBAR ===== -->
 <!-- Sidebar -->
 <div id="mySidebar" class="erp-navbar">
@@ -59,23 +57,19 @@
 <a href="/fees">Fees</a>
 <a href="/points">Points</a>
 <a href="/top_students">Top Students</a>
-
   </div>
   <div class="nav-right">
-
     <a href="/logout" class="btn btn-primary">Logout</a>
   </div>
 </div>
 <div class="container mt-4">
 <h2>Pending Course Requests</h2>
-
 <table class="table table-striped table-hover">
 <tr>
     <th>Student</th>
     <th>Course</th>
     <th>Action</th>
 </tr>
-
 {% for r in requests %}
 <tr>
     <td>{{ r.student }}</td>
@@ -88,9 +82,7 @@
 {% endfor %}
 </table>
             <a href="/dashboard" class="btn btn-secondary mt-3">Back to Dashboard</a>
-
 </div>
 <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-
 </body>
 </html>

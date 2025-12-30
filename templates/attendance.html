@@ -8,7 +8,6 @@
 </head>
 <body class="p-4 bg-light">
 <button id="sidebarToggle" class="btn btn-outline-primary">☰ Menu</button>
-
 <!-- ===== NAVBAR ===== -->
 <div id="mySidebar" class="erp-navbar">
   <div class="nav-left">
@@ -64,7 +63,6 @@
         </div>
         {% endif %}
     </form>
-
     {% if students %}
     <form method="post">
         <table class="table table-striped table-bordered align-middle text-center">
@@ -96,7 +94,6 @@
         <p>No students found for this subject.</p>
         {% endif %}
     {% endif %}
-
     <!-- ===== Attendance Analytics Chart ===== -->
     {% if chart_labels and chart_values %}
     <div class="card mt-5 p-3">
@@ -106,7 +103,6 @@
     {% endif %}
 
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/static/js/theme.js" defer></script>
 <script>
