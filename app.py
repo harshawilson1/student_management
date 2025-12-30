@@ -42,11 +42,8 @@ GENERAL_HOLIDAYS = [
     {"date": "2026-12-25", "title": "Christmas"},
 ]
 
-
 app = Flask(__name__)
 app.secret_key = "secret_key"
-
-
 
 def get_connection():
     print("MYSQL CONFIG USED:", MYSQL_CONFIG)
@@ -227,7 +224,6 @@ def dashboard():
         year=year
     )
 
-
 # ---------------- STUDENT DASHBOARD ----------------
 @app.route("/student_dashboard")
 def student_dashboard():
@@ -394,8 +390,6 @@ def add_material():
         courses=courses
     )
 
-# Admin Add Course Plan
-
 # ---------------- ADD STUDENT (ADMIN) ----------------
 @app.route("/students")
 def students():
@@ -522,8 +516,6 @@ def delete_student(student_id):
         conn.close()
 
     return redirect("/students")
-
-
 # ---------------- COURSES ----------------
 @app.route("/courses")
 def courses():
@@ -538,8 +530,6 @@ def courses():
     conn.close()
 
     return render_template("courses.html", courses=courses)
-
-
 @app.route("/add_course", methods=["GET", "POST"])
 def add_course():
     if session.get("role") != "admin":
@@ -560,8 +550,6 @@ def add_course():
         return redirect("/courses")
 
     return render_template("add_course.html")
-
-
 @app.route("/edit_course/<int:course_id>", methods=["GET", "POST"])
 def edit_course(course_id):
     if session.get("role") != "admin":
@@ -588,8 +576,6 @@ def edit_course(course_id):
         abort(404)
 
     return render_template("edit_course.html", course=course)
-
-
 @app.route("/delete_course/<int:course_id>")
 def delete_course(course_id):
     if session.get("role") != "admin":
@@ -603,16 +589,10 @@ def delete_course(course_id):
     conn.close()
 
     return redirect("/courses")
-
 @app.route("/attendance", methods=["GET", "POST"])
 def attendance():
     if session.get("role") != "admin":
         return abort(403)
-
-    from datetime import date, datetime, timedelta
-    import json
-    from flask import Response
-
     conn = get_connection()
     cur = conn.cursor(dictionary=True, buffered=True)
 
@@ -640,8 +620,7 @@ def attendance():
     # ---------------- Download CSV ----------------
     download = request.values.get("download")
     if download and selected_subject and request.method == "GET":
-        from io import StringIO
-        import csv
+
 
         si = StringIO()
         cw = csv.writer(si)
@@ -773,10 +752,6 @@ def update_fee(student_id):
     return redirect(url_for("fees"))
 @app.route("/fees/download_csv")
 def download_fees():
-    import csv
-    from io import StringIO
-    import datetime
-
     conn = get_connection()
     cur = conn.cursor(dictionary=True, buffered=True)
     cur.execute("""
@@ -860,8 +835,6 @@ def update_points(student_id):
     conn.close()
 
     return redirect("/points")
-
-
 @app.route("/top_students", methods=["GET"])
 def top_students():
     if session.get("role") != "admin":
@@ -923,9 +896,6 @@ LEFT JOIN points p ON s.id = p.student_id AND c.id = p.subject_id
         subjects=subjects,
         selected_subject=selected_subject
     )
-
-
-
 @app.route("/change_password", methods=["GET", "POST"])
 def change_password():
     if session.get("role") != "student":
@@ -1027,8 +997,6 @@ def approve_course(student_id, course_id):
     conn.close()
 
     return redirect("/course_requests")
-
-
 @app.route("/reject_course/<int:student_id>/<int:course_id>")
 def reject_course(student_id, course_id):
     if session.get("role") != "admin":
@@ -1097,8 +1065,6 @@ def drop_course(course_id):
     conn.close()
 
     return redirect("/view_courses")
-
-
 @app.route("/view_grades")
 def view_grades():
     student_id = session.get("student_id")
@@ -1190,8 +1156,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 @app.route("/student_profile", methods=["GET", "POST"])
 def student_profile():
     student_id = session.get("student_id")
@@ -1227,8 +1191,6 @@ def student_profile():
     cur.close()
     conn.close()
     return render_template("student_profile.html", student=student)
-
-
 @app.route("/update_profile_pic", methods=["POST"])
 def update_profile_pic():
     file = request.files.get("profile_pic")
@@ -1293,8 +1255,6 @@ def update_profile():
 
     flash("Profile updated successfully!", "success")
     return redirect(url_for("student_profile"))
-
-
 
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
