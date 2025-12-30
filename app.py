@@ -673,13 +673,13 @@ def attendance():
 
     if selected_subject:
         if chart_type == "day":
-            start_date = datetime.strptime(attendance_date, "%Y-%m-%d")
+            start_date = datetime.datetime.strptime(attendance_date, "%Y-%m-%d")
             end_date = start_date
         elif chart_type == "week":
-            start_date = datetime.strptime(attendance_date, "%Y-%m-%d") - timedelta(days=6)
-            end_date = datetime.strptime(attendance_date, "%Y-%m-%d")
+            start_date = datetime.datetime.strptime(attendance_date, "%Y-%m-%d") - timedelta(days=6)
+            end_date = datetime.datetime.strptime(attendance_date, "%Y-%m-%d")
         else:  # month
-            today = datetime.strptime(attendance_date, "%Y-%m-%d")
+            today = datetime.datetime.strptime(attendance_date, "%Y-%m-%d")
             start_date = today.replace(day=1)
             end_date = today
 
