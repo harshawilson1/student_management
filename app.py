@@ -185,11 +185,11 @@ def dashboard():
     day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
     # Upcoming holidays
+# Upcoming holidays only for the current month
     upcoming_holidays = []
     for h in GENERAL_HOLIDAYS:
-        h_day, h_month = map(int, h["date"].split("-"))
-        holiday_date = date(today_date.year, h_month, h_day)
-        if holiday_date >= today_date:
+        holiday_date = datetime.datetime.strptime(h["date"], "%Y-%m-%d").date()
+        if holiday_date.year == year and holiday_date.month == month:
             upcoming_holidays.append({
                 'date': holiday_date,
                 'title': h['title']
