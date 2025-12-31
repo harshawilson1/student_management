@@ -90,7 +90,7 @@ def student_login():
         conn = get_connection()
         cur = conn.cursor(dictionary=True,buffered=True)
         # Query using the correct column
-        cur.execute("SELECT * FROM students WHERE name=%s", (name))
+        cur.execute("SELECT * FROM students WHERE name=%s", (name,))
         student = cur.fetchone()
         cur.close()
         conn.close()
@@ -1070,7 +1070,7 @@ def view_grades():
         JOIN courses c ON sc.course_id = c.id
         LEFT JOIN points p 
             ON p.course_id = sc.course_id AND p.student_id = sc.student_id
-        WHERE sc.student_id = %s
+        WHERE sc.student_id = %s AND SC.STATUS='approved'
     """, (student_id,))
 
     data = cur.fetchall()
@@ -1080,17 +1080,20 @@ def view_grades():
     # Convert points to letter grades
     grades_data = []
     for row in data:
-        pts = row['points'] if row['points'] is not None else 0
-        if pts >= 90:
-            grade = 'A'
-        elif pts >= 80:
-            grade = 'B'
-        elif pts >= 70:
-            grade = 'C'
-        elif pts >= 60:
-            grade = 'D'
+        if row['points'] is None:
+            grade = 'N/A'
         else:
-            grade = 'F'
+            pts = row['points']
+            if pts >= 90:
+                grade = 'A'
+            elif pts >= 80:
+                grade = 'B'
+            elif pts >= 70:
+                grade = 'C'
+            elif pts >= 60:
+                grade = 'D'
+            else:
+                grade = 'F'
         grades_data.append({'subject': row['subject'], 'grade': grade})
 
     return render_template("view_grades.html", grades_data=grades_data)

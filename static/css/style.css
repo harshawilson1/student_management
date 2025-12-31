@@ -222,12 +222,23 @@ body.dashboard-body {
 .btn-primary {
   background-color: #4dabf7;
   color: #fff;
-  border: none;
-}
+  border: 1px solid #0c3bba;
 
-.btn-outline-primary {
-  box-shadow: 0 0 0 2px #0056b3;
-  border: 1px solid #4dabf7;
+  border-radius: 10px;
+  margin:20px;
+}
+.btn-outline-primary{
+  border: 1px solid #0c3bba;
+  background-color: rgb(86, 110, 244);
+  color: #000000;
+  border-radius: 10px;
+  margin:20px;
+
+
+}
+.btn-outline-primary.w-50.me-2 {
+  border: #000000;
+  background-color: transparent;
   color: #4dabf7;
   border-radius: 10px;
   margin:20px;
@@ -243,7 +254,7 @@ body.dashboard-body {
 
 /* ===== Dashboard Container ===== */
 .dashboard-container {
-  margin-left: 240px; /* space for sidebar */
+ /* space for sidebar */
   padding: 30px;
 }
 
@@ -274,7 +285,8 @@ div.card.card-students,div.card.card-courses,div.card.card-attendance,div.card.c
     transition: background 0.5s ease;
 }
 div.card.card-students:hover,div.card.card-courses:hover,div.card.card-attendance:hover,div.card.card-fees:hover,div.card.card-calender:hover,div.card.card-holidays:hover{
-    background-color: rgb(179, 231, 208);
+    background-color: rgb(155, 199, 194);
+
     box-shadow:10px 6px 12px rgba(2, 9, 9, 0.2);
 }
 div.dashboard-cards{
@@ -390,7 +402,7 @@ div.dashboard.container{
 
 
 .dashboard-container {
-  margin-left: 260px;
+
   padding: 30px;
   background: #f8fafc;
   min-height: 100vh;
