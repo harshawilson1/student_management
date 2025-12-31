@@ -117,7 +117,7 @@ input[type="text"],
 
     /* Submit button */
     button {
-        width: 100%;
+        width: 90%;
         padding: 10px;
         background: #007BFF;
         color: white;
@@ -157,7 +157,7 @@ input[type="text"],
 body.dashboard-body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
-  background-color: #fffcd8;
+
   color: #090606;
 }
 
@@ -230,8 +230,8 @@ body.dashboard-body {
   border: 1px solid #4dabf7;
   color: #4dabf7;
   border-radius: 10px;
-  margin: 20px;
-  padding:10px;
+  margin:20px;
+
 
 }
 
@@ -266,7 +266,7 @@ body.dashboard-body {
   padding-top: 20px;
 }
 div.card.card-students,div.card.card-courses,div.card.card-attendance,div.card.card-fees,div.card.card-calender,div.card.card-holidays {
-    background-color: #fff8b1;
+    background-color: #d9f9fc;
     border-radius: 10px;
     padding: 10px;
     box-shadow:10px 4px 8px rgba(2, 9, 9, 0.1);
@@ -274,7 +274,7 @@ div.card.card-students,div.card.card-courses,div.card.card-attendance,div.card.c
     transition: background 0.5s ease;
 }
 div.card.card-students:hover,div.card.card-courses:hover,div.card.card-attendance:hover,div.card.card-fees:hover,div.card.card-calender:hover,div.card.card-holidays:hover{
-    background-color: rgb(255, 246, 137);
+    background-color: rgb(179, 231, 208);
     box-shadow:10px 6px 12px rgba(2, 9, 9, 0.2);
 }
 div.dashboard-cards{
@@ -300,10 +300,10 @@ h3.about-header{
     text-align: center;
     margin:0px;
     width:100%;
-    background-color: #7ee779;
+    background-color: #bce8b9;
 }
 div.about-section{
-    background-color: #c3ecc8;
+    background-color: #dae8dc;
     padding-top: none;
     padding: 20px;
     border-radius: 10px;
@@ -529,7 +529,7 @@ div.dashboard.container{
 
 /* Dashboard content */
 .dashboard-container {
-    margin-left: 240px; /* default space for sidebar */
+ /* default space for sidebar */
     padding: 30px;
     transition: margin-left 0.3s ease;
 }
@@ -605,7 +605,7 @@ ul li {
 /* ================= ABOUT & FEATURES ================= */
 .about-section, .features-section {
     margin: 40px 0;
-    background-color: #c7f48fe6;
+    background-color: #e1f7f0e6;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
