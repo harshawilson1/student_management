@@ -81,7 +81,6 @@ def admin_login():
 @app.route("/student_login", methods=["GET", "POST"])
 def student_login():
     if request.method == "POST":
-        # Use the same name as your input field
         name = request.form.get("name")
         password = request.form.get("password")
 
@@ -91,7 +90,7 @@ def student_login():
         conn = get_connection()
         cur = conn.cursor(dictionary=True,buffered=True)
         # Query using the correct column
-        cur.execute("SELECT * FROM students WHERE name=%s", (name,))
+        cur.execute("SELECT * FROM students WHERE name=%s", (name))
         student = cur.fetchone()
         cur.close()
         conn.close()
@@ -354,7 +353,7 @@ def add_material():
     conn = get_connection()
     cur = conn.cursor(dictionary=True)
 
-    # 🔹 Fetch all courses (subjects)
+    # Fetch all courses (subjects)
     cur.execute("SELECT id, name FROM courses ORDER BY name")
     courses = cur.fetchall()
 
@@ -620,8 +619,6 @@ def attendance():
     # ---------------- Download CSV ----------------
     download = request.values.get("download")
     if download and selected_subject and request.method == "GET":
-
-
         si = StringIO()
         cw = csv.writer(si)
         cw.writerow(["Student Name", "Present"])
@@ -695,7 +692,6 @@ def attendance():
 
         chart_labels = [row['attendance_date'].strftime('%Y-%m-%d') for row in chart_data]
         chart_values = [float(row['percentage']) for row in chart_data]
-
     cur.close()
     conn.close()
 
@@ -1021,12 +1017,9 @@ def reject_course(student_id, course_id):
 def apply_course(course_id):
     if session.get("role") != "student":
         abort(403)
-
     student_id = session["student_id"]
-
     conn = get_connection()
     cur = conn.cursor()
-
     # prevent duplicate
     cur.execute("""
         SELECT * FROM student_courses
@@ -1039,10 +1032,8 @@ def apply_course(course_id):
             VALUES (%s, %s, 'pending')
         """, (student_id, course_id))
         conn.commit()
-
     cur.close()
     conn.close()
-
     return redirect("/view_courses")
 @app.route("/drop_course/<int:course_id>", methods=["POST"])
 def drop_course(course_id):
@@ -1120,10 +1111,8 @@ def grades():
         ORDER BY s.name, c.name
     """)
     grades_data = cur.fetchall()
-
     cur.close()
     conn.close()
-
     return render_template("grades.html", grades_data=grades_data)
 @app.route("/update_grade/<int:student_id>/<int:subject_id>", methods=["POST"])
 def update_grade(student_id, subject_id):
@@ -1260,6 +1249,6 @@ def update_profile():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("student_login"))   # or student_login / admin_login
+    return redirect(url_for("student_login"))   
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
