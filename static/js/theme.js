@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const toggleBtn = document.getElementById("sidebarToggle");
     const sidebar = document.getElementById("mySidebar");
-
     // Select all content wrappers
     const contentWrappers = document.querySelectorAll(".dashboard-container, .container");
-
     if (toggleBtn) {
         toggleBtn.addEventListener("click", function () {
             // Toggle sidebar
