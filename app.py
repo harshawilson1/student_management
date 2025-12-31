@@ -290,7 +290,6 @@ def student_dashboard():
         WHERE sc.student_id = %s AND sc.status='approved'
     """, (student_id,))
     courses = cur.fetchall()
-
     course_data = []
     for course in courses:
         # Study Materials
@@ -301,7 +300,6 @@ def student_dashboard():
             ORDER BY upload_date DESC
         """, (course['course_id'],))
         materials = cur.fetchall()
-
         # Course Plan
         cur.execute("""
             SELECT week_no, topic, description
@@ -817,20 +815,46 @@ def update_points(student_id):
     conn = get_connection()
     cur = conn.cursor()
 
-    # Check if points exist for this student & subject
+    # Update points table
     cur.execute("SELECT * FROM points WHERE student_id=%s AND subject_id=%s", (student_id, subject_id))
     existing = cur.fetchone()
 
     if existing:
-        cur.execute("UPDATE points SET points=%s WHERE student_id=%s AND subject_id=%s", (new_points, student_id, subject_id))
+        cur.execute("UPDATE points SET points=%s WHERE student_id=%s AND subject_id=%s", 
+                    (new_points, student_id, subject_id))
     else:
-        cur.execute("INSERT INTO points (student_id, subject_id, points) VALUES (%s, %s, %s)", (student_id, subject_id, new_points))
+        cur.execute("INSERT INTO points (student_id, subject_id, points) VALUES (%s, %s, %s)", 
+                    (student_id, subject_id, new_points))
+
+    # ---------- Automatically calculate grade ----------
+    if new_points >= 90:
+        grade = 'A'
+    elif new_points >= 80:
+        grade = 'B'
+    elif new_points >= 70:
+        grade = 'C'
+    elif new_points >= 60:
+        grade = 'D'
+    else:
+        grade = 'F'
+
+    # Insert/update the grade table
+    cur.execute("SELECT * FROM grades WHERE student_id=%s AND subject_id=%s", (student_id, subject_id))
+    existing_grade = cur.fetchone()
+
+    if existing_grade:
+        cur.execute("UPDATE grades SET grade=%s WHERE student_id=%s AND subject_id=%s", 
+                    (grade, student_id, subject_id))
+    else:
+        cur.execute("INSERT INTO grades (student_id, subject_id, grade) VALUES (%s, %s, %s)", 
+                    (student_id, subject_id, grade))
 
     conn.commit()
     cur.close()
     conn.close()
 
     return redirect("/points")
+
 @app.route("/top_students", methods=["GET"])
 def top_students():
     if session.get("role") != "admin":
@@ -1070,30 +1094,28 @@ def view_grades():
         JOIN courses c ON sc.course_id = c.id
         LEFT JOIN points p 
             ON p.course_id = sc.course_id AND p.student_id = sc.student_id
-        WHERE sc.student_id = %s AND SC.STATUS='approved'
+        WHERE sc.student_id = %s and sc.status='approved'
     """, (student_id,))
 
     data = cur.fetchall()
     cur.close()
     conn.close()
 
-    # Convert points to letter grades
     grades_data = []
     for row in data:
-        if row['points'] is None:
-            grade = 'N/A'
+        pts = row['points']
+        if pts is None:
+            grade = "Not graded yet"  # <-- New line for no points
+        elif pts >= 90:
+            grade = 'A'
+        elif pts >= 80:
+            grade = 'B'
+        elif pts >= 70:
+            grade = 'C'
+        elif pts >= 60:
+            grade = 'D'
         else:
-            pts = row['points']
-            if pts >= 90:
-                grade = 'A'
-            elif pts >= 80:
-                grade = 'B'
-            elif pts >= 70:
-                grade = 'C'
-            elif pts >= 60:
-                grade = 'D'
-            else:
-                grade = 'F'
+            grade = 'F'
         grades_data.append({'subject': row['subject'], 'grade': grade})
 
     return render_template("view_grades.html", grades_data=grades_data)
